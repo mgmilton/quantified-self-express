@@ -14,9 +14,12 @@ router.get('/:id', (req, res) => {
   var id = req.params.id
   Food.find(id)
     .then((food) => {
-      res.json(food)
+      if(food.length === 0) {
+        res.sendStatus(404)
+      } else {
+        res.json(food)
+      }
     })
-    .catch((error) => res.sendStatus(404).json({error}))
 })
 
 router.post('/', (req, res) => {
@@ -34,20 +37,27 @@ router.post('/', (req, res) => {
 router.patch('/:id', (req, res) => {
   var id = req.params.id;
   var attributes = req.body.food;
-
   Food.update(id, attributes)
     .then((food) => {
-      res.json(food)
+      if(food.length === 0){
+        res.sendStatus(404)
+      } else {
+        res.json(food)
+      }
     })
     .catch((error) => res.sendStatus(500).json({error}))
 })
 
 router.delete('/:id', (req, res)=> {
   var id = req.params.id;
-
-  Food.destroy(id)
-    .then((food)=> {
-      return res.sendStatus(204)
+  Food.find(id)
+    .then((food) =>{
+      if (food.length === 0) {
+        res.sendStatus(404)
+      } else {
+        Food.destroy(id)
+          .then((response) => res.sendStatus(204))
+      }
     })
     .catch((error) => res.sendStatus(500).json({error}))
 })
