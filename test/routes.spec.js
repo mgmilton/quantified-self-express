@@ -134,13 +134,13 @@ describe('API Routes', () => {
     });
   });
 
-  describe('POST /api/v1/foods', () => {
+  describe('PATCH /api/v1/foods/:id', () => {
 
-    it('should add a food', () => {
+    it('should update a food', () => {
       return chai.request(server)
-        .post('/api/v1/foods')
+        .patch('/api/v1/foods/1')
         .send({
-          foods: {name: "Spanakopita",
+          food: {name: "Spanakopita",
           calories: 285}
         })
         .then((response) => {
@@ -148,6 +148,20 @@ describe('API Routes', () => {
           response.body[0].should.be.a('object');
           response.body[0].name.should.equal('Spanakopita');
           response.body[0].calories.should.equal(285);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/foods/:id', () => {
+
+    it('should add a food', () => {
+      return chai.request(server)
+        .delete('/api/v1/foods/1')
+        .then((response) => {
+          response.should.have.status(204)
         })
         .catch((error) => {
           throw error;
