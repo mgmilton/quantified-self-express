@@ -28,7 +28,28 @@ router.post('/', (req, res) => {
     .then((food) => {
       res.json(food)
     })
-    .catch((error) => res.sendStatus(400).json({error}))
+    .catch((error) => res.sendStatus(500).json({error}))
+})
+
+router.patch('/:id', (req, res) => {
+  var id = req.params.id;
+  var attributes = req.body.food;
+
+  Food.update(id, attributes)
+    .then((food) => {
+      res.json(food)
+    })
+    .catch((error) => res.sendStatus(500).json({error}))
+})
+
+router.delete('/:id', (req, res)=> {
+  var id = req.params.id;
+
+  Food.destroy(id)
+    .then((food)=> {
+      return res.sendStatus(204)
+    })
+    .catch((error) => res.sendStatus(500).json({error}))
 })
 
 module.exports = router;
