@@ -97,6 +97,16 @@ describe('API Routes', () => {
           throw error;
         });
     });
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .get('/api/v1/foods/18885')
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
 
   });
 
@@ -120,7 +130,77 @@ describe('API Routes', () => {
         });
     });
 
+    it('should sends an error when no food is sent', () => {
+      return chai.request(server)
+        .post('/api/v1/foods')
+        .send({})
+        .then((response) => {
+          response.should.have.status(400)
+          response.body.error.should.equal('No food property provided!')
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
 
+  describe('PATCH /api/v1/foods/:id', () => {
+
+    it('should update a food', () => {
+      return chai.request(server)
+        .patch('/api/v1/foods/1')
+        .send({
+          food: {name: "Spanakopita",
+          calories: 285}
+        })
+        .then((response) => {
+          response.should.have.status(200);
+          response.body[0].should.be.a('object');
+          response.body[0].name.should.equal('Spanakopita');
+          response.body[0].calories.should.equal(285);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .patch('/api/v1/foods/18885')
+        .send({
+          food: {name: "Spanakopita",
+          calories: 285}
+        })
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/foods/:id', () => {
+    it('should delete a food', () => {
+      return chai.request(server)
+        .delete('/api/v1/foods/1')
+        .then((response) => {
+          response.should.have.status(204)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .delete('/api/v1/foods/18885')
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
   });
 
 });
