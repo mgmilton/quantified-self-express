@@ -97,6 +97,16 @@ describe('API Routes', () => {
           throw error;
         });
     });
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .get('/api/v1/foods/18885')
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
 
   });
 
@@ -153,15 +163,39 @@ describe('API Routes', () => {
           throw error;
         });
     });
+
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .patch('/api/v1/foods/18885')
+        .send({
+          food: {name: "Spanakopita",
+          calories: 285}
+        })
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
   });
 
   describe('DELETE /api/v1/foods/:id', () => {
-
-    it('should add a food', () => {
+    it('should delete a food', () => {
       return chai.request(server)
         .delete('/api/v1/foods/1')
         .then((response) => {
           response.should.have.status(204)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .delete('/api/v1/foods/18885')
+        .then((response) => {
+          response.should.have.status(404)
         })
         .catch((error) => {
           throw error;
