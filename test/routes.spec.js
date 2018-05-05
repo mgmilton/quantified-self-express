@@ -203,4 +203,49 @@ describe('API Routes', () => {
     });
   });
 
+  describe('GET /api/v1/meals/', () => {
+    it('should return all meals ', () => {
+      return chai.request(server)
+        .get('/api/v1/meals')
+        .then((response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body[0].id.should.equal(1);
+          response.body[0].name.should.equal('Breakfast');
+          response.body[0].foods[0].name.should.equal('Bagel');
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
+  describe('GET /api/v1/meals/:meal_id/foods', () => {
+    it('should return a meal and associated food', () => {
+      return chai.request(server)
+        .get('/api/v1/meals')
+        .then((response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body[0].id.should.equal(1);
+          response.body[0].name.should.equal('Breakfast');
+          response.body[0].foods[0].name.should.equal('Bagel');
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+
+    it('should return a 404 if food not found', () => {
+      return chai.request(server)
+        .get('/api/v1/meals/18885/foods')
+        .then((response) => {
+          response.should.have.status(404)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
 });
