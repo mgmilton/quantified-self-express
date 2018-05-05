@@ -120,7 +120,39 @@ describe('API Routes', () => {
         });
     });
 
+    it('should sends an error when no food is sent', () => {
+      return chai.request(server)
+        .post('/api/v1/foods')
+        .send({})
+        .then((response) => {
+          response.should.have.status(400)
+          response.body.error.should.equal('No food property provided!')
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
 
+  describe('POST /api/v1/foods', () => {
+
+    it('should add a food', () => {
+      return chai.request(server)
+        .post('/api/v1/foods')
+        .send({
+          foods: {name: "Spanakopita",
+          calories: 285}
+        })
+        .then((response) => {
+          response.should.have.status(200);
+          response.body[0].should.be.a('object');
+          response.body[0].name.should.equal('Spanakopita');
+          response.body[0].calories.should.equal(285);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
   });
 
 });
