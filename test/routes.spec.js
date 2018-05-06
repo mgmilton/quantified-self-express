@@ -248,4 +248,31 @@ describe('API Routes', () => {
     });
   });
 
+  describe('POST /api/v1/meals/:meal_id/foods/:food_id', () => {
+
+    it('should add a food to the meal', () => {
+      return chai.request(server)
+        .post('/api/v1/meals/3/foods/1')
+        .then((response) => {
+          response.should.have.status(201);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/meals/:meal_id/foods/:food_id', () => {
+    it('should delete a food', () => {
+      return chai.request(server)
+        .delete('/api/v1/meals/1/foods/2')
+        .then((response) => {
+          response.should.have.status(204)
+        })
+        .catch((error) => {
+          throw error;
+        });
+    });
+  });
+
 });
