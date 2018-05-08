@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  var attributes = req.body.foods
+  var attributes = req.body.food
   if (!attributes) {
     return res.status(400).send({error: "No food property provided!"})
   }
