@@ -22,6 +22,16 @@ router.get('/:id', (req, res) => {
     })
 })
 
+
+router.get('/favorite_foods', (req, res) => {
+  FavoriteFoods.all()
+    .then((favFoods) => {
+      res.json(favFoods)
+    })
+    .catch((error) => res.sendStatus(500).json({error}))
+})
+
+
 router.post('/', (req, res) => {
   var attributes = req.body.food
   if (!attributes) {
