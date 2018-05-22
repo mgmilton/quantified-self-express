@@ -7,7 +7,9 @@ exports.seed = function(knex, Promise) {
       return knex('foods').insert([
         {id: 1, name: 'Bagel', calories: 245},
         {id: 2, name: 'Cashews', calories: 157},
-        {id: 3, name: 'Cucumber', calories: 8}
+        {id: 3, name: 'Cucumber', calories: 8},
+        {id: 4, name: 'Banana', calories: 200},
+        {id: 5, name: 'Meat Loaf', calories: 800}
       ]);
     });
 };
