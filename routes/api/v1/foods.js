@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Food = require('../../../models/food');
-
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest
 router.get('/', (req, res) => {
   Food.all()
     .then((foods) => {
@@ -21,6 +21,25 @@ router.get('/:id', (req, res) => {
       }
     })
 })
+router.get('/:id/recipes', (req, res) => {
+  var id = req.params.id
+  Food.find(id)
+    .then((food) => {
+      if(food.length === 0) {
+        res.sendStatus(404)
+      } else {
+        var url = `http://api.yummly.com/v1/api/recipes?_app-id=1257200a&_app_key=785f0a72ab3daeb8e87aa1e01d0bd49c&${food.name}`
+        var xhReq = new XMLHttpRequest();
+        xhReq.open("GET", url, false);
+        xhReq.setRequestHeader('X-Yummly-App-ID', '1257200a');
+        xhReq.setRequestHeader('X-Yummly-App-Key', '785f0a72ab3daeb8e87aa1e01d0bd49c');
+        xhReq.send(null);
+        var recipes = JSON.parse(xhReq.responseText)
+        res.json(recipes)
+      }
+    })
+})
+
 
 router.post('/', (req, res) => {
   var attributes = req.body.food
