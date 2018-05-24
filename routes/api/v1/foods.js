@@ -28,7 +28,8 @@ router.get('/:id/recipes', (req, res) => {
       if(food.length === 0) {
         res.sendStatus(404)
       } else {
-        var url = `http://api.yummly.com/v1/api/recipes?_app-id=1257200a&_app_key=785f0a72ab3daeb8e87aa1e01d0bd49c&${food.name}`
+        food = food[0].name
+        var url = `http://api.yummly.com/v1/api/recipes?_app-id=1257200a&_app_key=785f0a72ab3daeb8e87aa1e01d0bd49c` + `q=${food.name}`;
         var xhReq = new XMLHttpRequest();
         xhReq.open("GET", url, false);
         xhReq.setRequestHeader('X-Yummly-App-ID', '1257200a');
